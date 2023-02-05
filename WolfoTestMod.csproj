@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="backupold.cs" />
-    <Compile Remove="Pearls.cs" />
-    <Compile Remove="Tokens.cs" />
+    <Compile Remove="old\backupold.cs" />
+    <Compile Remove="old\Pearls.cs" />
+    <Compile Remove="old\Tokens.cs" />
   </ItemGroup>
 
 
@@ -299,6 +299,11 @@
 	  <Reference Include="UnityEngine.UnityWebRequestTextureModule">
 	    <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
 	  </Reference>
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="old\" />
 	</ItemGroup>
 
 </Project>
