@@ -1,0 +1,5 @@
+Allows Saint to use Passages. For all the lazy players out there.
+
+Commented source code, and mod folder for non-Steam players, available at https://github.com/kadw108/saintcanpassage
+
+If you run into errors, you can message KADW#4425 on Discord. Include the consoleLog.txt and possible exceptionLog.txt file in your Rain World folder. Thanks!
