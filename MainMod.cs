@@ -18,6 +18,7 @@ namespace WolfoTestMod
             //On.Menu.SlugcatSelectMenu.SetSlugcatColorOrder += SetSlugcatColorOrder_SetSlugcatColorOrder;
             //On.SlugcatStats.HiddenOrUnplayableSlugcat += SlugcatStats_HiddenOrUnplayableSlugcat; ;
             //On.Menu.MenuScene.BuildMSLandscapeScene += MenuScene_BuildMSLandscapeScene;
+            //ass
 
             On.PlayerProgression.LoadProgression += PlayerProgression_LoadProgression;
             On.PlayerProgression.SaveProgression += PlayerProgression_SaveProgression;
