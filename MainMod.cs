@@ -9,7 +9,7 @@ using MoreSlugcats;
 
 namespace WolfoTestMod
 {
-    [BepInPlugin("wolfo.wolfotestmod", "WolfoTestMod", "1.0.0")]
+    [BepInPlugin("wolfo.expeditioncopymiscprog", "WolfoTestMod", "1.0.0")]
     public class WolfoTestMod : BaseUnityPlugin
     {
         public void OnEnable()
@@ -19,10 +19,6 @@ namespace WolfoTestMod
             //On.SlugcatStats.HiddenOrUnplayableSlugcat += SlugcatStats_HiddenOrUnplayableSlugcat; ;
             //On.Menu.MenuScene.BuildMSLandscapeScene += MenuScene_BuildMSLandscapeScene;
 
-            //Pearls.OnEnable();
-            //Tokens.OnEnable();
-            //Merged Tokens from Main onto Expd
-
             On.PlayerProgression.LoadProgression += PlayerProgression_LoadProgression;
             On.PlayerProgression.SaveProgression += PlayerProgression_SaveProgression;
 
@@ -31,18 +27,7 @@ namespace WolfoTestMod
             On.RainWorldGame.ctor += RainWorldGame_ctor;
         }
 
-        private void PlayerProgression_SaveProgression(On.PlayerProgression.orig_SaveProgression orig, PlayerProgression self, bool saveMaps, bool saveMiscProg)
-        {
-            Debug.Log("Saving Progress Sandbox Tokens Amount " + self.miscProgressionData.sandboxTokens.Count);
-            orig(self, saveMaps, saveMiscProg);
-            CopyDataFromSave(self);
-            Debug.Log("ExpeditionSharedProgress Save Progress SaveSlot " + self.rainWorld.options.saveSlot);
-        }
-
         private static int wasExpedition = 0;
-
-        //private static List<string> tempSheltersDiscovered;
-
 
         private void PlayerProgression_LoadProgression(On.PlayerProgression.orig_LoadProgression orig, PlayerProgression self)
         {
@@ -74,6 +59,13 @@ namespace WolfoTestMod
             Debug.Log("Sandbox Tokens Amount " + self.miscProgressionData.sandboxTokens.Count);
         }
 
+        private void PlayerProgression_SaveProgression(On.PlayerProgression.orig_SaveProgression orig, PlayerProgression self, bool saveMaps, bool saveMiscProg)
+        {
+            Debug.Log("Saving Progress Sandbox Tokens Amount " + self.miscProgressionData.sandboxTokens.Count);
+            orig(self, saveMaps, saveMiscProg);
+            CopyDataFromSave(self);
+            Debug.Log("ExpeditionSharedProgress Save Progress SaveSlot " + self.rainWorld.options.saveSlot);
+        }
 
         private static bool hasStoredData = false;
 
@@ -125,40 +117,21 @@ namespace WolfoTestMod
             self.miscProgressionData.discoveredBroadcasts = new List<ChatlogData.ChatlogID>(discoveredBroadcastsInTrans);
 
             self.SaveProgression(true,true);
-
-            sandboxTokensInTrans.Clear();
-            levelTokensInTrans.Clear();
-            safariTokensInTrans.Clear();
-            classTokensInTrans.Clear();
-
-            decipheredPearlsInTrans.Clear();
-            decipheredDMPearlsInTrans.Clear();
-            decipheredFuturePearlsInTrans.Clear();
-            decipheredPebblesPearlsInTrans.Clear();
-            discoveredBroadcastsInTrans.Clear();
-
             hasStoredData = false;
             Debug.Log("ExpeditionSharedProgress : Saving Stored Data to SaveSlot " + self.rainWorld.options.saveSlot);
         }
 
-        public static int one = 1;
-
         private static void RainWorldGame_ctor(On.RainWorldGame.orig_ctor orig, RainWorldGame game, ProcessManager manager)
         {
-            if (one == 1)
-            {
-                one++;
-                IL.SlugcatStats.ctor += SlugcatStats_ctor;
-                IL.Room.Loaded += EnableTokensInExpedition;
-                IL.Menu.SleepAndDeathScreen.GetDataFromGame += TokenTrackerInExpedition;
-            }
+            IL.Room.Loaded += EnableTokensInExpedition;
+            IL.Menu.SleepAndDeathScreen.GetDataFromGame += TokenTrackerInExpedition;
 
+            IL.SlugcatStats.ctor += SlugcatStats_ctor;
             //IL.Menu.PauseMenu.ctor += PauseMenu_ctor;
 
             Debug.Log("Wolfo mod loaded");
-
-
             orig(game, manager);
+            On.RainWorldGame.ctor -= RainWorldGame_ctor;
         }
 
         private static void TokenTrackerInExpedition(ILContext il)

@@ -6,6 +6,12 @@
 	  <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="backupold.cs" />
+    <Compile Remove="Pearls.cs" />
+    <Compile Remove="Tokens.cs" />
+  </ItemGroup>
+
 
 	<ItemGroup>
 	  <Reference Include="0Harmony">
