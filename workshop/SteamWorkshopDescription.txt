@@ -1,5 +1,5 @@
-Allows Saint to use Passages. For all the lazy players out there.
+Allows Unlock Tokens to appear in Expedition and makes Token/Pearl progress shared between main and expedition.
 
-Commented source code, and mod folder for non-Steam players, available at https://github.com/kadw108/saintcanpassage
+Feels wrong doing a Pearl delivery challenge just to not end up having it in your collection menu.
 
-If you run into errors, you can message KADW#4425 on Discord. Include the consoleLog.txt and possible exceptionLog.txt file in your Rain World folder. Thanks!
+It's not shared in the normal game because Expedition uses it's own save file and they didn't add support for shared progress. 

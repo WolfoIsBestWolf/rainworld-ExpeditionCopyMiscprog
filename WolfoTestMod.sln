@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WolfoTestMod", "WolfoTestMod.csproj", "{D1D30999-33F2-481D-987F-A6F837B3371C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpeditionCopyMiscProg", "ExpeditionCopyMiscProg.csproj", "{D1D30999-33F2-481D-987F-A6F837B3371C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

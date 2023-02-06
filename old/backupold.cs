@@ -87,3 +87,45 @@ private void MenuScene_BuildMSLandscapeScene(On.Menu.MenuScene.orig_BuildMSLands
             }
         }
 */
+//On.Menu.SlugcatSelectMenu.SetSlugcatColorOrder += SetSlugcatColorOrder_SetSlugcatColorOrder;
+//On.SlugcatStats.HiddenOrUnplayableSlugcat += SlugcatStats_HiddenOrUnplayableSlugcat; ;
+//On.Menu.MenuScene.BuildMSLandscapeScene += MenuScene_BuildMSLandscapeScene;
+
+/*
+private static void SlugcatStats_ctor(ILContext il)
+{
+    ILCursor c = new ILCursor(il);
+    if (c.TryGotoNext(MoveType.Before,
+        x => x.MatchLdcR4(1.75f),
+        x => x.MatchStfld("SlugcatStats", "runspeedFac"),
+        x => x.MatchLdarg(0),
+        x => x.MatchLdcR4(1.8f)))
+    {
+        c.Next.Operand = 25f;
+        Debug.Log("Wolfo Rivulete insane speed");
+    }
+    else
+    {
+        Debug.LogError("Wolfo IL Failed to apply Safer Spaces Cooldown hook");
+    }
+}
+*/
+/*
+private static void SetSlugcatColorOrder_SetSlugcatColorOrder(On.Menu.SlugcatSelectMenu.orig_SetSlugcatColorOrder orig, SlugcatSelectMenu self)
+{
+    orig(self);
+    if (ModManager.MSC)
+    {
+        self.slugcatColorOrder.Add(MoreSlugcatsEnums.SlugcatStatsName.Sofanthiel);
+    }
+}
+private bool SlugcatStats_HiddenOrUnplayableSlugcat(On.SlugcatStats.orig_HiddenOrUnplayableSlugcat orig, SlugcatStats.Name i)
+{
+    if ((ModManager.MSC && i == MoreSlugcatsEnums.SlugcatStatsName.Sofanthiel))
+    {
+        return false;
+    }
+    return orig(i);
+}
+*/
+//IL.SlugcatStats.ctor += SlugcatStats_ctor; //Simple check if IL is working
