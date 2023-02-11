@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="old\backupold.cs" />
+    <Compile Remove="old\oldsystem.cs" />
     <Compile Remove="old\Pearls.cs" />
     <Compile Remove="old\Tokens.cs" />
   </ItemGroup>

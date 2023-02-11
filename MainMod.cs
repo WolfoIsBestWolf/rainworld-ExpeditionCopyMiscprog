@@ -9,30 +9,90 @@ using MoreSlugcats;
 
 namespace ExpeditionCopyMiscProg
 {
-    [BepInPlugin("wolfo.expeditioncopymiscprog", "ExpeditionCopyMiscProg", "1.0.1")]
+    [BepInPlugin("wolfo.expeditioncopymiscprog", "ExpeditionCopyMiscProg", "1.0.3")]
     public class ExpeditionCopyMiscProg : BaseUnityPlugin
     {
         public void OnEnable()
         {
             On.RainWorld.OnModsInit += AddConfigHook;
-            //Debug Messages here apparently dont play
-            //Maybe reuse and clear lists idk
-            On.PlayerProgression.LoadProgression += PlayerProgression_LoadProgression;
-            On.PlayerProgression.SaveProgression += PlayerProgression_SaveProgression;
-            On.Menu.OptionsMenu.SetCurrentlySelectedOfSeries += OptionsSaveSlotButtonProtect;
+            //Since Official system added just imitating that
+            On.PlayerProgression.Destroy += CopyingData;
+            On.PlayerProgression.MiscProgressionData.FromString += SavingData;
+
+            On.Menu.OptionsMenu.SetCurrentlySelectedOfSeries += OptionsSaveSlotButtonProtect; //Idk if still needed
 
             On.RainWorldGame.ctor += AddILHooks;
 
         }
 
-        //static readonly string version = "1.0.1";
-
-
         private void AddConfigHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)
         {
             orig(self);
-            Debug.Log("Wolfo Mod Loaded");
+            Debug.Log("ExpeditionCopyMiscProg Loaded");
             MachineConnector.SetRegisteredOI("expeditioncopymiscprog", ExpeditionCopyMiscProgConfig.instance);
+        }
+
+        private static bool hasStoredData = false;
+
+        private static List<MultiplayerUnlocks.SandboxUnlockID> sandboxTokensInTrans = new List<MultiplayerUnlocks.SandboxUnlockID>();
+        private static List<MultiplayerUnlocks.LevelUnlockID> levelTokensInTrans = new List<MultiplayerUnlocks.LevelUnlockID>();
+        private static List<MultiplayerUnlocks.SafariUnlockID> safariTokensInTrans = new List<MultiplayerUnlocks.SafariUnlockID>();
+        private static List<MultiplayerUnlocks.SlugcatUnlockID> classTokensInTrans = new List<MultiplayerUnlocks.SlugcatUnlockID>();
+
+        private void CopyingData(On.PlayerProgression.orig_Destroy orig, PlayerProgression self, int previousSaveSlot)
+        {
+            //Debug.Log("ExpeditionCopyMiscProg: PlayerProgression_Destroy : PreviousSaveSlot: " + previousSaveSlot + " CurrentSaveSlot: " + self.rainWorld.options.saveSlot);
+            if (previousSaveSlot < 0 && self.rainWorld.options.saveSlot >= 0 || previousSaveSlot >= 0 && self.rainWorld.options.saveSlot < 0)
+            {
+                Debug.Log("ExpeditionCopyMiscProg: Copying Data from "+previousSaveSlot);
+                sandboxTokensInTrans = self.miscProgressionData.sandboxTokens;
+                levelTokensInTrans = self.miscProgressionData.levelTokens;
+                safariTokensInTrans = self.miscProgressionData.safariTokens;
+                classTokensInTrans = self.miscProgressionData.classTokens;
+                hasStoredData = true;
+            }
+            else
+            {
+                Debug.Log("ExpeditionCopyMiscProg: Discarding copied Data");
+                sandboxTokensInTrans.Clear();
+                levelTokensInTrans.Clear();
+                safariTokensInTrans.Clear();
+                classTokensInTrans.Clear();
+                hasStoredData = false;
+            }
+            
+            orig(self, previousSaveSlot);
+        }
+
+        private void SavingData(On.PlayerProgression.MiscProgressionData.orig_FromString orig, PlayerProgression.MiscProgressionData self, string s)
+        {
+            orig(self, s);
+            //Debug.Log("ExpeditionCopyMiscProg: PlayerProgression.MiscProgressionData_FromString : CurrentSaveSlot: " + self.owner.rainWorld.options.saveSlot);
+            //Debug.Log("ExpeditionCopyMiscProg: Pre Tokens Amount B:" + self.sandboxTokens.Count + " G:" + self.levelTokens.Count + " R:" + self.safariTokens.Count + " G:" + self.classTokens.Count);
+            if (self.owner.rainWorld.options != null && hasStoredData)
+            {
+                self.owner.SyncLoadModState(); //Why is this needed still
+                Debug.Log("ExpeditionCopyMiscProg: Saving Data to "+self.owner.rainWorld.options.saveSlot);
+                if (self.sandboxTokens.Count < sandboxTokensInTrans.Count)
+                {
+                    self.sandboxTokens = new List<MultiplayerUnlocks.SandboxUnlockID>(sandboxTokensInTrans);
+                }
+                if (self.levelTokens.Count < levelTokensInTrans.Count)
+                {
+                    self.levelTokens = new List<MultiplayerUnlocks.LevelUnlockID>(levelTokensInTrans);
+                }
+                if (self.safariTokens.Count < safariTokensInTrans.Count)
+                {
+                    self.safariTokens = new List<MultiplayerUnlocks.SafariUnlockID>(safariTokensInTrans);
+                }
+                if (self.classTokens.Count < classTokensInTrans.Count)
+                {
+                    self.classTokens = new List<MultiplayerUnlocks.SlugcatUnlockID>(classTokensInTrans);
+                }
+                self.owner.SaveProgression(false, true);
+                //Debug.Log("ExpeditionCopyMiscProg: Post Tokens Amount B:" + self.sandboxTokens.Count + " G:" + self.levelTokens.Count + " R:" + self.safariTokens.Count + " G:" + self.classTokens.Count);
+            }
+           
         }
 
 
@@ -41,128 +101,18 @@ namespace ExpeditionCopyMiscProg
             //Debug.Log("SetCurrentlySelectedOfSeries "+series);
             if (series == "SaveSlot")
             {
+                sandboxTokensInTrans.Clear();
+                levelTokensInTrans.Clear();
+                safariTokensInTrans.Clear();
+                classTokensInTrans.Clear();
                 hasStoredData = false;
-                wasExpedition = 0;
             }
             orig(self, series, to);
         }
 
-        private static int wasExpedition = 0;
-
-        private void PlayerProgression_LoadProgression(On.PlayerProgression.orig_LoadProgression orig, PlayerProgression self)
-        {
-            orig(self); 
-            if (self.HasSaveData)
-            {
-                Debug.Log("ExpeditionCopyMiscProg: Loading SaveSlot " + self.rainWorld.options.saveSlot);
-                if (!hasStoredData)
-                {
-                    CopyDataFromSave(self);
-                }
-                else if (!self.rainWorld.ExpeditionMode && wasExpedition == 1 && hasStoredData)
-                {
-                    Debug.Log("ExpeditionCopyMiscProg: Saving to Main File");
-                    CopyDataToSave(self);
-                    wasExpedition = 0;  //This is to Main file
-                }
-                else if (self.rainWorld.ExpeditionMode && wasExpedition == 0 && hasStoredData)
-                {
-                    Debug.Log("ExpeditionCopyMiscProg: Saving to Expedition File");
-                    CopyDataToSave(self);
-                    wasExpedition = 1; //This is to Expd file
-                }
-            }
-        }
-
-        private bool PlayerProgression_SaveProgression(On.PlayerProgression.orig_SaveProgression orig, PlayerProgression self, bool saveMaps, bool saveMiscProg)
-        {
-            Debug.Log("ExpeditionCopyMiscProg: Saving SaveSlot " + self.rainWorld.options.saveSlot);
-            bool temp = orig(self, saveMaps, saveMiscProg);
-            CopyDataFromSave(self);
-            return temp;
-        }
-
-
-        private static bool hasStoredData = false;
-
-        //private static Dictionary<string, Texture2D>? mapDiscoveryTexturesInTrans; //Not how Map Progress is Saved 
-
-        private static List<MultiplayerUnlocks.SandboxUnlockID>? sandboxTokensInTrans;
-        private static List<MultiplayerUnlocks.LevelUnlockID>? levelTokensInTrans;
-        private static List<MultiplayerUnlocks.SafariUnlockID>? safariTokensInTrans;
-        private static List<MultiplayerUnlocks.SlugcatUnlockID>? classTokensInTrans;
-
-        private static List<DataPearl.AbstractDataPearl.DataPearlType>? decipheredPearlsInTrans;
-        private static List<DataPearl.AbstractDataPearl.DataPearlType>? decipheredDMPearlsInTrans;
-        private static List<DataPearl.AbstractDataPearl.DataPearlType>? decipheredFuturePearlsInTrans;
-        private static List<DataPearl.AbstractDataPearl.DataPearlType>? decipheredPebblesPearlsInTrans;
-        private static List<ChatlogData.ChatlogID>? discoveredBroadcastsInTrans;
-
-
-        private static void CopyDataFromSave(PlayerProgression self)
-        {
-            sandboxTokensInTrans = new List<MultiplayerUnlocks.SandboxUnlockID>(self.miscProgressionData.sandboxTokens);
-            levelTokensInTrans = new List<MultiplayerUnlocks.LevelUnlockID>(self.miscProgressionData.levelTokens);
-            safariTokensInTrans = new List<MultiplayerUnlocks.SafariUnlockID>(self.miscProgressionData.safariTokens);
-            classTokensInTrans = new List<MultiplayerUnlocks.SlugcatUnlockID>(self.miscProgressionData.classTokens);
-            
-            decipheredPearlsInTrans = new List<DataPearl.AbstractDataPearl.DataPearlType>(self.miscProgressionData.decipheredPearls);
-            decipheredDMPearlsInTrans = new List<DataPearl.AbstractDataPearl.DataPearlType>(self.miscProgressionData.decipheredDMPearls);
-            decipheredFuturePearlsInTrans = new List<DataPearl.AbstractDataPearl.DataPearlType>(self.miscProgressionData.decipheredFuturePearls);
-            decipheredPebblesPearlsInTrans = new List<DataPearl.AbstractDataPearl.DataPearlType>(self.miscProgressionData.decipheredPebblesPearls);
-            discoveredBroadcastsInTrans = new List<ChatlogData.ChatlogID>(self.miscProgressionData.discoveredBroadcasts);
-
-            hasStoredData = true;
-            Debug.Log("ExpeditionCopyMiscProg: Copying Data ");
-        }
-
-
-        private static void CopyDataToSave(PlayerProgression self)
-        {
-            #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            //Debug.Log("Pre  Tokens Amount B:" + self.miscProgressionData.sandboxTokens.Count+" G:"+self.miscProgressionData.levelTokens.Count);
-            if (self.miscProgressionData.sandboxTokens.Count < sandboxTokensInTrans.Count)
-            {
-                self.miscProgressionData.sandboxTokens = new List<MultiplayerUnlocks.SandboxUnlockID>(sandboxTokensInTrans);
-            }
-            if (self.miscProgressionData.levelTokens.Count < levelTokensInTrans.Count)
-            {
-                self.miscProgressionData.levelTokens = new List<MultiplayerUnlocks.LevelUnlockID>(levelTokensInTrans);
-            }
-            if (self.miscProgressionData.safariTokens.Count < safariTokensInTrans.Count)
-            {
-                self.miscProgressionData.safariTokens = new List<MultiplayerUnlocks.SafariUnlockID>(safariTokensInTrans);
-            }
-            if (self.miscProgressionData.classTokens.Count < classTokensInTrans.Count)
-            {
-                self.miscProgressionData.classTokens = new List<MultiplayerUnlocks.SlugcatUnlockID>(classTokensInTrans);
-            }
-            if (self.miscProgressionData.discoveredBroadcasts.Count < discoveredBroadcastsInTrans.Count)
-            {
-                self.miscProgressionData.discoveredBroadcasts = new List<ChatlogData.ChatlogID>(discoveredBroadcastsInTrans);
-            }
-            //Debug.Log("Post Tokens Amount B:" + self.miscProgressionData.sandboxTokens.Count+" G:"+self.miscProgressionData.levelTokens.Count);
-            
-            self.miscProgressionData.decipheredFuturePearls = new List<DataPearl.AbstractDataPearl.DataPearlType>(decipheredFuturePearlsInTrans);
-            //Pearl retrofitting
-            decipheredPearlsInTrans.AddRange(self.miscProgressionData.decipheredPearls);
-            self.miscProgressionData.decipheredPearls = decipheredPearlsInTrans.Distinct().ToList();
-
-            decipheredDMPearlsInTrans.AddRange(self.miscProgressionData.decipheredDMPearls);
-            self.miscProgressionData.decipheredDMPearls = decipheredDMPearlsInTrans.Distinct().ToList();
-
-            decipheredPebblesPearlsInTrans.AddRange(self.miscProgressionData.decipheredPebblesPearls);
-            self.miscProgressionData.decipheredPebblesPearls = decipheredPebblesPearlsInTrans.Distinct().ToList();
-
-            hasStoredData = false;
-            Debug.Log("ExpeditionCopyMiscProg: Storing Data");
-            self.SyncLoadModState(); //Randomly started being needed???
-            self.SaveProgression(false,true);
-        }
-
         private static void AddILHooks(On.RainWorldGame.orig_ctor orig, RainWorldGame game, ProcessManager manager)
         {
-            Debug.Log("IL Hooks being added");
+            Debug.Log("ExpeditionCopyMiscProg: IL Hooks being added");
             IL.Room.Loaded += EnableTokensInExpedition;
             IL.Menu.SleepAndDeathScreen.GetDataFromGame += TokenTrackerInExpedition;
             if (ExpeditionCopyMiscProgConfig.earlierPauseWarning.Value)
@@ -187,11 +137,11 @@ namespace ExpeditionCopyMiscProg
             {
                 c.Index += 3;
                 c.Next.OpCode = OpCodes.Brtrue_S;
-                Debug.Log("ExpeditionCopyMiscProg : Token Tracker Hook Success");
+                Debug.Log("ExpeditionCopyMiscProg: Token Tracker Hook Success");
             }
             else
             {
-                Debug.Log("ExpeditionCopyMiscProg : Token Tracker Hook Failed");
+                Debug.Log("ExpeditionCopyMiscProg: Token Tracker Hook Failed");
             }
         }
 
@@ -205,11 +155,11 @@ namespace ExpeditionCopyMiscProg
             {
                 c.Index += 3;
                 c.Next.OpCode = OpCodes.Brtrue_S;
-                Debug.Log("ExpeditionCopyMiscProg : Token IL Hook Succeeded");
+                Debug.Log("ExpeditionCopyMiscProg: Token IL Hook Succeeded");
             }
             else
             {
-                Debug.Log("ExpeditionCopyMiscProg : Failed Token IL Hook");
+                Debug.Log("ExpeditionCopyMiscProg: Failed Token IL Hook");
             }
         }
 
@@ -225,11 +175,11 @@ namespace ExpeditionCopyMiscProg
             {
                 c.Index += 1;
                 c.Next.Operand = 200;
-                Debug.Log("Pause IL Hook Success");
+                Debug.Log("ExpeditionCopyMiscProg: Pause IL Hook Success");
             }
             else
             {
-                Debug.Log("Pause IL Hook Failed");
+                Debug.Log("ExpeditionCopyMiscProg: Pause IL Hook Failed");
             }
         }
 
