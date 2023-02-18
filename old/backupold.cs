@@ -129,3 +129,19 @@ private bool SlugcatStats_HiddenOrUnplayableSlugcat(On.SlugcatStats.orig_HiddenO
 }
 */
 //IL.SlugcatStats.ctor += SlugcatStats_ctor; //Simple check if IL is working
+
+
+
+foreach (var a in self.miscProgressionData.colorsEnabled)
+{
+    Debug.Log("colorsEnabled : " + a.Key + " + " + a.Value);
+}
+foreach (var a in self.miscProgressionData.colorChoices)
+{
+    string ff = "colorChoices : " + a.Key + " + ";
+    foreach (var b in a.Value)
+    {
+        ff = ff + b + " ";
+    }
+    Debug.Log(ff);
+}

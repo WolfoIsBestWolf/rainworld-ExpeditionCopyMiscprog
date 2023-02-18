@@ -1,11 +1,9 @@
 ﻿using BepInEx;
 using UnityEngine;
-using MonoMod.Cil;
-using Mono.Cecil.Cil;
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using MoreSlugcats;
+using Expedition;
+using RWCustom;
 using Menu.Remix.MixedUI;
 
 namespace ExpeditionCopyMiscProg
@@ -16,15 +14,18 @@ namespace ExpeditionCopyMiscProg
 
 		public static ExpeditionCopyMiscProgConfig instance = new ExpeditionCopyMiscProgConfig();
 
-		public static Configurable<bool> earlierPauseWarning = ExpeditionCopyMiscProgConfig.instance.config.Bind<bool>("earlierPauseWarning", false, new ConfigurableInfo("Show the exit warning about losing Karma earlier in Main campaigns to avoid accidentally exiting.", null, "", new object[]
+		public static Configurable<bool> cfgPauseWarning = ExpeditionCopyMiscProgConfig.instance.config.Bind<bool>("cfgPauseWarning", false, new ConfigurableInfo("Show the exit warning about losing Karma earlier in Main campaigns to avoid accidentally exiting.", null, "", new object[]
 			{
 				"Early exit warning on Main"
 			}));
-		public static Configurable<bool> musicPlayMore = ExpeditionCopyMiscProgConfig.instance.config.Bind<bool>("musicPlayMore", false, new ConfigurableInfo("Removes the cycle rest from Music triggers so that they can play every cycle instead of every 5 cycles.", null, "", new object[]
-{
+		public static Configurable<bool> cfgMusicPlayMore = ExpeditionCopyMiscProgConfig.instance.config.Bind<bool>("cfgMusicPlayMore", false, new ConfigurableInfo("Removes the cycle rest from Music triggers so that they can play every cycle instead of every 5 cycles.", null, "", new object[]
+			{
 				"Music plays more often"
 			}));
-
+		public static Configurable<bool> cfgCustomColor = ExpeditionCopyMiscProgConfig.instance.config.Bind<bool>("cfgCustomColor", true, new ConfigurableInfo("Expedition will use the Custom Colors defined in Main.", null, "", new object[]
+			{
+				"Custom Color shared"
+			}));
 
 		public override void Initialize()
 		{
@@ -42,28 +43,40 @@ namespace ExpeditionCopyMiscProg
 
 		private void AddCheckbox()
 		{
-			OpCheckBox opCheckBox = new OpCheckBox(earlierPauseWarning, new Vector2(10f, 500f))
+			float lableY = 2.5f;
+			float labelX = 35f;
+			OpCheckBox OptCustomColor = new OpCheckBox(cfgCustomColor, new Vector2(20f, 400f))
 			{
-				description = earlierPauseWarning.info.description
+				description = cfgCustomColor.info.description
 			};
-			OpLabel opLabel = new OpLabel(50f, 505f, earlierPauseWarning.info.Tags[0] as string, false)
+			OpLabel LabelCustomColor = new OpLabel(20f+ labelX, 400f + 2.5f, cfgCustomColor.info.Tags[0] as string, false)
 			{
-				description = earlierPauseWarning.info.description
+				description = cfgCustomColor.info.description
 			};
-			OpCheckBox opCheckBox2 = new OpCheckBox(musicPlayMore, new Vector2(10f, 470f))
+			OpCheckBox OptPauseWarning = new OpCheckBox(cfgPauseWarning, new Vector2(20f, 400f-40*1))
 			{
-				description = musicPlayMore.info.description
+				description = cfgPauseWarning.info.description
 			};
-			OpLabel opLabel2 = new OpLabel(50f, 475f, musicPlayMore.info.Tags[0] as string, false)
+			OpLabel LabelPauseWarning = new OpLabel(20f + labelX, 400f + 2.5f - 40 * 1, cfgPauseWarning.info.Tags[0] as string, false)
 			{
-				description = musicPlayMore.info.description
+				description = cfgPauseWarning.info.description
+			};
+			OpCheckBox OptMusicPlayMore = new OpCheckBox(cfgMusicPlayMore, new Vector2(20f, 400f - 40 * 2))
+			{
+				description = cfgMusicPlayMore.info.description
+			};
+			OpLabel LabelMusicPlayMore = new OpLabel(20f + labelX, 400f + 2.5f - 40 * 2, cfgMusicPlayMore.info.Tags[0] as string, false)
+			{
+				description = cfgMusicPlayMore.info.description
 			};
 			this.Tabs[0].AddItems(new UIelement[]
 			{
-				opCheckBox,
-				opLabel,
-				opCheckBox2,
-				opLabel2
+				OptCustomColor,
+				LabelCustomColor,
+				OptPauseWarning,
+				LabelPauseWarning,
+				OptMusicPlayMore,
+				LabelMusicPlayMore
 			});
 		}
 
