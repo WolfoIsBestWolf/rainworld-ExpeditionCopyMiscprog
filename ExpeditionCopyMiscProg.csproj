@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Notes\**" />
     <Compile Remove="old\**" />
+    <EmbeddedResource Remove="Notes\**" />
     <EmbeddedResource Remove="old\**" />
+    <None Remove="Notes\**" />
     <None Remove="old\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
   </ItemGroup>
 
 
@@ -25,9 +33,6 @@
 	  </Reference>
 	  <Reference Include="Assembly-CSharp">
 	    <HintPath>D:\SteamLibrary\steamapps\common\Rain World\RainWorld_Data\Managed\Assembly-CSharp.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Assembly-CSharp-firstpass">
-	    <HintPath>D:\SteamLibrary\steamapps\common\Rain World\RainWorld_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
 	  </Reference>
 	  <Reference Include="BepInEx">
 	    <HintPath>D:\SteamLibrary\steamapps\common\Rain World\BepInEx\core\BepInEx.dll</HintPath>

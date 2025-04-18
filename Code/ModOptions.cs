@@ -33,12 +33,13 @@ namespace ExpeditionCopyMiscProg
             {
                 "Token Tracker colored"
             }));
-        public static Configurable<bool> cfgCustomColorMenu = instance.config.Bind<bool>("cfgCustomColorMenu", true,
-            new ConfigurableInfo("Adds the custom slugcat color menu from Remix to the Expedition character select screen. Only if Jolly Co-op is disabled (that has it's own).", null, "", new object[]
-            {
-                "Custom Color menu for Expedition"
-            }));
- 
+        public static Configurable<bool> cfgBroadcast = instance.config.Bind<bool>("cfgBroadcast", true,
+                    new ConfigurableInfo("Spearmaster White Tokens / Broadcasts will choose Pre - Pebbles Broadcasts", null, "", new object[]
+                    {
+                "Broadcast Pre-Pebble"
+                    }));
+
+
 
         public override void Initialize()
 		{
@@ -235,7 +236,6 @@ namespace ExpeditionCopyMiscProg
             {
                 cfgTokenTrackerAll,
                 cfgTokenTrackerColorful,
-                cfgCustomColorMenu,
             };
             string[] names = new string[]
              {

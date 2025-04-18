@@ -12,13 +12,33 @@ using System.Globalization;
 
 namespace ExpeditionCopyMiscProg
 {
-    [BepInPlugin("wolfo.expeditioncopymiscprog", "ExpeditionCopyMiscProg", "1.2.0")]
+    [BepInPlugin("wolfo.expeditioncopymiscprog", "ExpeditionCopyMiscProg", "1.2.2")]
     public class ExpeditionCopyMiscProg : BaseUnityPlugin
     {
+        public static bool initialized = false;
         public void OnEnable()
         {
             On.RainWorld.OnModsInit += AddConfigHook;
-            On.RainWorldGame.ctor += AddILHooks;
+        }
+
+        public static bool hasStoredData = false;
+        public static List<MultiplayerUnlocks.SandboxUnlockID> transferTokenSandbox = new List<MultiplayerUnlocks.SandboxUnlockID>();
+        public static List<MultiplayerUnlocks.LevelUnlockID> transferTokenArena = new List<MultiplayerUnlocks.LevelUnlockID>();
+        public static List<MultiplayerUnlocks.SafariUnlockID> transferTokenSafari = new List<MultiplayerUnlocks.SafariUnlockID>();
+        public static List<MultiplayerUnlocks.SlugcatUnlockID> transferTokenSlug = new List<MultiplayerUnlocks.SlugcatUnlockID>();
+        public static List<ChatlogData.ChatlogID> transferTokenChatlog = new List<ChatlogData.ChatlogID>();
+
+        public void AddConfigHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)
+        {
+            orig(self);
+            if (initialized)
+            {
+                return;
+            }
+            initialized = true;
+            UnityEngine.Debug.Log("ExpeditionCopyMiscProg Loaded");
+            MachineConnector.SetRegisteredOI("expeditioncopymiscprog", WConfig.instance);
+
             //Since Official system added just imitating that
             On.PlayerProgression.Destroy += CopyingData;
             On.PlayerProgression.MiscProgressionData.FromString += SavingData;
@@ -26,9 +46,15 @@ namespace ExpeditionCopyMiscProg
             On.Menu.OptionsMenu.SetCurrentlySelectedOfSeries += OptionsSaveSlotButtonProtect; //Idk if still needed
             On.Region.RegionColor += Region_RegionColor;
 
-            ColorMenu.Start();
-        }
+            IL.Room.Loaded += EnableTokensInExpedition;
+            IL.Menu.SleepAndDeathScreen.GetDataFromGame += TokenTrackerInExpedition;
+            IL.MoreSlugcats.CollectiblesTracker.ctor += TokenTrackerAllRegions;
 
+            //Maybe read in broadcast progress from the save file,
+            //And then just choose next one based on that.
+            //On.MoreSlugcats.ChatlogData.getLinearBroadcast += ChatlogData_getLinearBroadcast;
+          
+        }
         private Color Region_RegionColor(On.Region.orig_RegionColor orig, string regionName)
         {
             if (WConfig.cfgTokenTrackerColorful.Value)
@@ -38,29 +64,24 @@ namespace ExpeditionCopyMiscProg
             return orig(regionName);
         }
 
-        public void AddConfigHook(On.RainWorld.orig_OnModsInit orig, RainWorld self)
+        private string[] ChatlogData_getLinearBroadcast(On.MoreSlugcats.ChatlogData.orig_getLinearBroadcast orig, int id, bool postPebbles)
         {
-            orig(self);
-            UnityEngine.Debug.Log("ExpeditionCopyMiscProg Loaded");
-            MachineConnector.SetRegisteredOI("expeditioncopymiscprog", WConfig.instance);
+            if (Custom.rainWorld.ExpeditionMode)
+            {
+              
+            }
+
+            return orig(id,postPebbles);
         }
+ 
 
-        public static bool hasStoredData = false;
-
-        public static List<MultiplayerUnlocks.SandboxUnlockID> transferTokenSandbox = new List<MultiplayerUnlocks.SandboxUnlockID>();
-        public static List<MultiplayerUnlocks.LevelUnlockID> transferTokenArena = new List<MultiplayerUnlocks.LevelUnlockID>();
-        public static List<MultiplayerUnlocks.SafariUnlockID> transferTokenSafari = new List<MultiplayerUnlocks.SafariUnlockID>();
-        public static List<MultiplayerUnlocks.SlugcatUnlockID> transferTokenSlug = new List<MultiplayerUnlocks.SlugcatUnlockID>();
-        public static List<ChatlogData.ChatlogID> transferTokenChatlog = new List<ChatlogData.ChatlogID>();
-
-         
         public void CopyingData(On.PlayerProgression.orig_Destroy orig, PlayerProgression self, int previousSaveSlot)
         {
             //Debug.Log("ExpeditionCopyMiscProg: PlayerProgression_Destroy : PreviousSaveSlot: " + previousSaveSlot + " CurrentSaveSlot: " + self.rainWorld.options.saveSlot);
             //Less than 0 is Expd and current not Expd, then other going from Main to Expd
             if (previousSaveSlot < 0 && self.rainWorld.options.saveSlot >= 0 || previousSaveSlot >= 0 && self.rainWorld.options.saveSlot < 0)
             {
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg: Copying Data from "+previousSaveSlot);
+                Debug.Log("ExpeditionCopyMiscProg: Copying Data from "+previousSaveSlot);
                 transferTokenSandbox = self.miscProgressionData.sandboxTokens;
                 transferTokenArena = self.miscProgressionData.levelTokens;
                 transferTokenSafari = self.miscProgressionData.safariTokens;
@@ -70,7 +91,7 @@ namespace ExpeditionCopyMiscProg
             }
             else
             {
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg: Discarding copied Data");
+                Debug.Log("ExpeditionCopyMiscProg: Discarding copied Data");
                 transferTokenSandbox.Clear();
                 transferTokenArena.Clear();
                 transferTokenSafari.Clear();
@@ -90,7 +111,7 @@ namespace ExpeditionCopyMiscProg
             if (self.owner.rainWorld.options != null && hasStoredData)
             {
                 self.owner.SyncLoadModState(); //Why is this needed still
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg: Saving Data to " + self.owner.rainWorld.options.saveSlot);
+                Debug.Log("ExpeditionCopyMiscProg: Saving Data to " + self.owner.rainWorld.options.saveSlot);
 
                 if (self.sandboxTokens.Count < transferTokenSandbox.Count)
                 {
@@ -134,30 +155,17 @@ namespace ExpeditionCopyMiscProg
             orig(self, series, to);
         }
 
-        public static void AddILHooks(On.RainWorldGame.orig_ctor orig, RainWorldGame game, ProcessManager manager)
-        {
-            UnityEngine.Debug.Log("ExpeditionCopyMiscProg: IL Hooks being added");
-            IL.Room.Loaded += EnableTokensInExpedition;
-            IL.Menu.SleepAndDeathScreen.GetDataFromGame += TokenTrackerInExpedition;
-            IL.MoreSlugcats.CollectiblesTracker.ctor += TokenTrackerAllRegions;
-
-
-            orig(game, manager);
-            On.RainWorldGame.ctor -= AddILHooks; //Seems fine to only ever run this once
-        }
-
+ 
         private static void TokenTrackerAllRegions(ILContext il)
         {
-          
             ILCursor c = new(il);
             c.TryGotoNext(MoveType.Before,
              x => x.MatchLdstr("ctNone"));
 
-
             if (c.TryGotoPrev(MoveType.After,
              x => x.MatchCallOrCallvirt("System.Collections.Generic.List`1<System.String>", "Contains")))
             {
-                c.EmitDelegate<System.Func<bool, bool>>((karma) =>
+                c.EmitDelegate<Func<bool, bool>>((karma) =>
                 {
                     if (Custom.rainWorld.ExpeditionMode)
                     {
@@ -165,15 +173,14 @@ namespace ExpeditionCopyMiscProg
                         {
                             return true;
                         }
-                    }
-                    
+                    }   
                     return karma;
                 });
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg: TokenTrackerAllRegions");
+                Debug.Log("ExpeditionCopyMiscProg: TokenTrackerAllRegions");
             }
             else
             {
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg:TokenTrackerAllRegions Failed");
+                Debug.Log("ExpeditionCopyMiscProg:TokenTrackerAllRegions Failed");
             }
 
 
@@ -189,36 +196,40 @@ namespace ExpeditionCopyMiscProg
         public static void TokenTrackerInExpedition(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.After,
                 x => x.MatchCallOrCallvirt("Menu.SleepAndDeathScreen", "get_IsStarveScreen"),
                 x => x.MatchBrfalse(out _),
                 x => x.MatchLdsfld("ModManager", "Expedition")))
             {
-                c.Index += 3;
-                c.Next.OpCode = OpCodes.Brtrue_S;
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg: Token Tracker Hook Success");
+                c.EmitDelegate<Func<bool, bool>>((self) =>
+                {
+                    return false;
+                });
+                Debug.Log("ExpeditionCopyMiscProg: Token Tracker Hook Success");
             }
             else
             {
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg: Token Tracker Hook Failed");
+                Debug.Log("ExpeditionCopyMiscProg: Token Tracker Hook Failed");
             }
         }
 
         public static void EnableTokensInExpedition(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.Before,
+            if (c.TryGotoNext(MoveType.After,
                 x => x.MatchLdfld("PlacedObject", "active"),
                 x => x.MatchBrfalse(out _),
                 x => x.MatchLdsfld("ModManager", "Expedition")))
             {
-                c.Index += 3;
-                c.Next.OpCode = OpCodes.Brtrue_S;
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg: Token IL Hook Succeeded");
+                c.EmitDelegate<Func<bool, bool>>((self) =>
+                {
+                    return false;
+                });
+                Debug.Log("ExpeditionCopyMiscProg: Token IL Hook Succeeded");
             }
             else
             {
-                UnityEngine.Debug.Log("ExpeditionCopyMiscProg: Failed Token IL Hook");
+                Debug.Log("ExpeditionCopyMiscProg: Failed Token IL Hook");
             }
         }
 
