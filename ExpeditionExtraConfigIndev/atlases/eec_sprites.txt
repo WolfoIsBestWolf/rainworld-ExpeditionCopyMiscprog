@@ -1,0 +1,20 @@
+{"frames": {
+
+"vistaRing.png":
+{
+	"frame": {"x":2,"y":2,"w":137,"h":137},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":137,"h":137},
+	"sourceSize": {"w":140,"h":140}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "eec_sprites.png",
+	"format": "RGBA8888",
+	"size": {"w":250,"h":567},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:817c9358eadeeee1659e64f297a7a8d0:0cbfab087373f6f4941c73a0981916dc:3bf13f80871600b224962cc5511803ac$"
+}
+}

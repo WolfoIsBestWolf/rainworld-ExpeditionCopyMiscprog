@@ -1,0 +1,13 @@
+{
+    "key" : "EEC_Future1",
+    "name" : "Mission_TimeTravelFuture",
+    "slugcat" : "Spear",
+    "challenges" : [
+	"VistaChallenge~CL><CL_H02><2407><1649><0><0><0",
+	"EchoChallenge~SL><0><0><0",
+	"PearlHoardChallenge~1><2><UG><0><0><0",
+	"HuntChallenge~ZoopLizard><8><0><0><0><0",
+				   ],
+	"requirements" : []
+    "den" : "SU_S03",
+}

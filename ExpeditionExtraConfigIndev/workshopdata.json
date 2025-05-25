@@ -1,0 +1,18 @@
+{
+  "Title": "Expedition Extras \u0026 Config",
+  "Description": "Settings for Expedition Mode to add things absent from the game mode or make it easier\u003CLINE\u003EAdds the Custom Color Menu to the Expedition character select.",
+  "ID": "ExpeditionExtraConfig",
+  "Version": "1.3.0",
+  "TargetGameVersion": "v1.10.3",
+  "Requirements": "expedition",
+  "RequirementNames": "Expedition",
+  "Authors": "Wolfo",
+  "Visibility": "Public",
+  "Tags": [
+    "Game Modes",
+    "Accessibility"
+  ],
+  "WorkshopID": 2934281637,
+  "UploadFilesOnly": true,
+  "UploadThumbnail": false
+}

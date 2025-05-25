@@ -1,0 +1,7 @@
+{
+    "key" : "eec_Passage",
+    "type" : "milestone",
+    "color" : "FFDD66",
+    "conditions" : ["ttyp-AchievementChallenge-5"],
+    "reward" : ["unl-eec-Passages"],
+}

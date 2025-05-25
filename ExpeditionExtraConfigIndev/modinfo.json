@@ -1,0 +1,13 @@
+{
+	"id": "ExpeditionExtraConfig",
+	"name": "Expedition Extras & Config",
+	"version": "1.4.2",
+	"authors": "Wolfo",
+	"description": "Adds many settings for Expedition mode akin to Remix.\nMake Expeditions easier, make some Slugcats more like their campaign, and some other neat things.\n\nAdds some more basic perks\nAdds the Custom Color Menu to the Expedition character select.",
+	"requirements": ["expedition","rwremix"],
+	"requirements_names": ["Expedition", "Rain World Remix"],
+	"checksum_override_version": false
+	"priorities": ["moreslugcats"],
+		"requirements": ["rwremix"],
+	"tags": ["Accessibility","Game Modes", "Downpour"]
+}

@@ -1,0 +1,79 @@
+﻿Perk_MonkGate_Name|Unlock Karma Gates
+Perk_MonkGate_Desc|Gates will remain open permanently after passing through them once
+Perk_SpearWall_Name|Dislodge Spears
+Perk_SpearWall_Desc|Allows the player to dislodge spears that are embedded in walls
+Perk_FireSpear_Name|Explosive Spear
+Perk_FireSpear_Desc|Start the expedition with a Explosive Spear
+Perk_EnergyCell_Name|Rarefaction Cell
+Perk_EnergyCell_Desc|Start the expedition with a Rarefaction Cell
+Perk_Passage_Name|Classic Passages
+Perk_Passage_Desc|Allow the use of Passages. Earn passages by completing sleep screen goals as you would in campaigns.
+Perk_Mother_Name|Mother
+Perk_Mother_Desc|Start the expedition with a family of 2 Slugpups
+
+Perk_Already_Remix|This perk is already enabled for free as a Remix option.<LINE>You cannot choose it again.
+Perk_Already_Option|This perk is already enabled for free as a Expedition Extras option.<LINE>You cannot choose it again.
+
+Burden_Rain_Name|Stormy
+Burden_Rain_Desc|Cycles will be shorter and Shelter failure will occur more often.
+
+
+Jukebox_Autoplay_Name|Auto
+Jukebox_Autoplay_Desc|Tracks play one after another
+
+Mission_Rubicon|ReRubicon
+Mission_TimeTravelFuture|Untold Futures
+Mission_TimeTravelPast|Unseen Pasts
+
+
+EECConfig_Name_KarmaStart|Starting Karma
+EECConfig_Desc_KarmaStart|Change starting Karma. Vanilla is 2.
+EECConfig_Name_KarmaMaxStart|Starting Max Karma
+EECConfig_Desc_KarmaMaxStart|Change starting Max Karma. Vanilla is 5.
+EECConfig_Name_KarmaIncreaseEcho|Echoes increase max Karma
+EECConfig_Desc_KarmaIncreaseEcho|Allow Echos to increase max Karma during Expeditions. This allows Saint to reach his potential.
+EECConfig_Name_KarmaIncrease5P|Pebbles increases max Karma
+EECConfig_Desc_KarmaIncrease5P|Five Pebbles will increase your Karma like in campaigns. Increase by 1 for Hunter/Gourmand and set to max for Survivor/Monk.
+EECConfig_Name_KarmaFlower|Natural Karma Flowers
+EECConfig_Desc_KarmaFlower|Allow natural Karma Flowers to spawn during Expedition. Hunter still can not find them
+
+EECConfig_Name_SaveOn0|
+EECConfig_Desc_SaveOn0|
+EECConfig_Name_NoKarmaLoss0|
+EECConfig_Desc_NoKarmaLoss0|
+EECConfig_Name_NoDeath|
+EECConfig_Desc_NoDeath|
+
+
+EECConfig_Name_Pups|
+EECConfig_Desc_Pups|
+EECConfig_Name_PupsAll|
+EECConfig_Desc_PupsAll|
+EECConfig_Name_PupsOften|
+EECConfig_Desc_PupsOften|
+
+EECConfig_Name_MonkCScore|
+EECConfig_Desc_MonkCScore|
+EECConfig_Name_SurvivorMother|
+EECConfig_Desc_SurvivorMother|
+EECConfig_Name_GourmandMother|
+EECConfig_Desc_GourmandMother|
+
+
+
+EECConfig_Name_UnlockPerks|
+EECConfig_Desc_UnlockPerks|
+EECConfig_Name_UnlockMusic|
+EECConfig_Desc_UnlockMusic|
+EECConfig_Name_UnlockEgg|
+EECConfig_Desc_UnlockEgg|
+ 
+EECConfig_Name_UnlockNewPerks|
+EECConfig_Desc_UnlockNewPerks|
+
+
+
+EECConfig_Name_blank|
+EECConfig_Desc_blank|
+
+

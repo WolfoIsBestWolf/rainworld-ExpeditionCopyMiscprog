@@ -9,6 +9,7 @@ using MoreSlugcats;
 using Expedition;
 using RWCustom;
 using System.Globalization;
+using Unity.Mathematics;
 
 namespace ExpeditionCopyMiscProg
 {
@@ -40,13 +41,15 @@ namespace ExpeditionCopyMiscProg
             MachineConnector.SetRegisteredOI("expeditioncopymiscprog", WConfig.instance);
 
             //Since Official system added just imitating that
+            IL.Room.Loaded += EnableTokensInExpedition;
+
             On.PlayerProgression.Destroy += CopyingData;
             On.PlayerProgression.MiscProgressionData.FromString += SavingData;
 
             On.Menu.OptionsMenu.SetCurrentlySelectedOfSeries += OptionsSaveSlotButtonProtect; //Idk if still needed
             On.Region.RegionColor += Region_RegionColor;
 
-            IL.Room.Loaded += EnableTokensInExpedition;
+           
             IL.Menu.SleepAndDeathScreen.GetDataFromGame += TokenTrackerInExpedition;
             IL.MoreSlugcats.CollectiblesTracker.ctor += TokenTrackerAllRegions;
 
@@ -176,21 +179,14 @@ namespace ExpeditionCopyMiscProg
                     }   
                     return karma;
                 });
-                Debug.Log("ExpeditionCopyMiscProg: TokenTrackerAllRegions");
+                //Debug.Log("ExpeditionCopyMiscProg: TokenTrackerAllRegions");
             }
             else
             {
                 Debug.Log("ExpeditionCopyMiscProg:TokenTrackerAllRegions Failed");
             }
 
-
-            /*c.TryGotoPrev(MoveType.Before,
-            x => x.MatchLdcR4(0.25f));
-            c.Next.Operand = 0f;*/
-
-            /*c.TryGotoPrev(MoveType.Before,
-            x => x.MatchLdcR4(0.5f));
-            c.Next.Operand = 2f;*/
+ 
         }
 
         public static void TokenTrackerInExpedition(ILContext il)
@@ -205,7 +201,7 @@ namespace ExpeditionCopyMiscProg
                 {
                     return false;
                 });
-                Debug.Log("ExpeditionCopyMiscProg: Token Tracker Hook Success");
+                //Debug.Log("ExpeditionCopyMiscProg: Token Tracker Hook Success");
             }
             else
             {
@@ -216,16 +212,16 @@ namespace ExpeditionCopyMiscProg
         public static void EnableTokensInExpedition(ILContext il)
         {
             ILCursor c = new(il);
-            if (c.TryGotoNext(MoveType.After,
-                x => x.MatchLdfld("PlacedObject", "active"),
-                x => x.MatchBrfalse(out _),
-                x => x.MatchLdsfld("ModManager", "Expedition")))
+            bool bool1 = c.TryGotoNext(MoveType.After,
+                x => x.MatchLdsfld("PlacedObject/Type", "BlueToken"));
+            bool bool2 = c.TryGotoPrev(MoveType.After,
+                x => x.MatchCallvirt("RainWorld", "get_ExpeditionMode"));
+            if (bool1 && bool2)
             {
                 c.EmitDelegate<Func<bool, bool>>((self) =>
                 {
                     return false;
                 });
-                Debug.Log("ExpeditionCopyMiscProg: Token IL Hook Succeeded");
             }
             else
             {

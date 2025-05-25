@@ -1,0 +1,11 @@
+{
+    "key" : "EEC_Rubicon",
+    "name" : "ReRubicon",
+    "slugcat" : "Saint",
+    "challenges" : [
+	"GlobalScoreChallenge~0><666><0><0><0",
+	"HuntChallenge~FireBug><6><0><0><0><0",
+	"VistaChallenge~HR><HR_L02><750><3525><0><0><0><0><0",
+				   ],
+    "den" : "HR_C01",
+}

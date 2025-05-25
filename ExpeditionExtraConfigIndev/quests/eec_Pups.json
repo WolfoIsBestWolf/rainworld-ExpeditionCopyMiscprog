@@ -1,0 +1,7 @@
+{
+    "key" : "eec_Pups",
+    "type" : "milestone",
+    "color" : "FFDD66",
+    "conditions" : ["lvl-10","swins-Gourmand-4"],
+    "reward" : ["unl-eec-Pups"],
+}

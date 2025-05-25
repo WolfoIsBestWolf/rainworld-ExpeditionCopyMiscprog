@@ -1,0 +1,21 @@
+Ideally report bugs here.
+Reporting a bug, in general:
+
+If the mod gave an error on startup, a screenshot of that. 
+
+
+If the game soft crashed or failed on a menu.  Do not restart your game.
+Go to to your game folder "Rain World"
+There should be a "exception.log", which is the critical error log.
+Restarting the game always deletes this file.
+Usually the info in this file will tell what is wrong where and the likely mod culprit.
+
+
+"Rain World\consoleLog.txt" does not contain any useful information on it's own.
+Mods may add their own debug messages, so it can still be useful. 
+(I don't usually, beyond seeing if IL code failed)
+
+
+If something just didn't happen, it can be possible that the mod maker just forgot.
+
+Alternatively you can reach me on Discord @.wolfo 

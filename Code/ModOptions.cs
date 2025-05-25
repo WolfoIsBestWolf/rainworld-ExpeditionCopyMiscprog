@@ -15,14 +15,6 @@ namespace ExpeditionCopyMiscProg
 	
 		public static WConfig instance = new WConfig();
 
-		/*public static Configurable<bool> cfgPauseWarning = ExpeditionCopyMiscProgConfig.instance.config.Bind<bool>("cfgPauseWarning", false, new ConfigurableInfo("Show the exit warning about losing Karma earlier in Main campaigns to avoid accidentally exiting.", null, "", new object[]
-			{
-				"Early exit warning on Main"
-			}));
-		public static Configurable<bool> cfgMusicPlayMore = ExpeditionCopyMiscProgConfig.instance.config.Bind<bool>("cfgMusicPlayMore", false, new ConfigurableInfo("Removes the cycle rest from Music triggers so that they can play every cycle instead of every 5 cycles.", null, "", new object[]
-			{
-				"Music plays more often"
-			}));*/
 		public static Configurable<bool> cfgTokenTrackerAll = instance.config.Bind<bool>("cfgTokenTrackerAll", true, 
 			new ConfigurableInfo("The token tracker, on the sleep screen, during expeditions, will show all regions.", null, "", new object[]
 			{

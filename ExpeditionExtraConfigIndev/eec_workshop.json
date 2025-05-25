@@ -1,0 +1,103 @@
+Some settings for Expedition mode to make it easier or make some of the Slugcats more like their campaign.
+
+Some basic content to fit alongside other vanilla content. 
+
+Settings and their default values shown in the screenshots.
+But you can also set them to their vanilla values.
+
+[b][h1]Main features :
+[/h1][/b]A lot of options.
+
+Slugpups in Expedition
+Vista points on the map.
+Custom Color menu if Remix is enabled.
+Rivulet sometimes has shorter cycles and shelter failures again.
+Artificer starts with her Drone, Spearmaster with its Overseer.
+Saint can find Echoes easier.
+
+[b][h1]Easier / Accessibility :
+[/h1][/b]Options for :
+Echoes increasing max Karma again for more saftey.
+Natural Karma flowers to spawn.
+Passage teleports earned from passages.
+Removing Perma Death all together.
+
+Limitting Hunting challenges as they take a long time.
+
+[b][h1]Content :
+[/h1][/b]A couple new perks to mostly increase choice.
+[table]
+    [tr]
+        [td]Monk Gates[/td]
+		[td]Not in vanilla because it's a Remix setting[/td]
+        [td]Win 1 Expedition as Monk[/td]
+    [/tr]
+    [tr]
+        [td]Pull Spears from walls[/td]
+		[td]Not in vanilla because it's a Remix setting[/td]
+        [td]Unlocked from the start[/td]
+    [/tr]
+	[tr]
+        [td]Classic Passages[/td]
+		[td]If you want more teleports or prefer this way to earn teleports[/td]
+        [td]Beat 5 Passage Challenges[/td]
+    [/tr]
+	[tr]
+        [td]Explosive Spear[/td]
+		[td]Start with this item[/td]
+        [td]Beat 3 Overall Score challenges[/td]
+    [/tr]
+	[tr]
+        [td] Rarefaction Cell[/td]
+		[td]Start with this item[/td]
+        [td]Beat 4 Rivulet Expeditions + Be level 10[/td]
+    [/tr]
+	[tr]
+        [td]Mother[/td]
+		[td]Start with 2 Slugpups[/td]
+        [td]Beat 4 Gourmand Expeditions + Be level 10[/td]
+    [/tr]
+[/table]
+
+A Saint mission to revisit Rubicon.
+A Saint mission where you're in Spearmasters timeline.
+A Spearmaster mission where you're in Saints timeline.
+
+Vistas for Regions that are missing them. Can be disabled.
+[table]
+    [tr]
+        [th][b]Region[/b][/th]
+        [th][b]Rooms[/b][/th]
+    [/tr]
+    [tr]
+        [td]Five Pebbles (SS)[/td]
+        [td]SS_D04 | SS_E05 | SS_I03[/td]
+    [/tr]
+    [tr]
+        [td]Waterfront Facility (LM) (For Spear and Arti)[/td]
+        [td]LM_B01 | LM_C04 | LM_TOWER04[/td]
+    [/tr]
+	[tr]
+        [td]Submerged Superstructure (MS) (For Rivulet)[/td]
+        [td]MS_AI | MS_AIR03 | MS_FARSIDE[/td]
+    [/tr]
+[/table]
+Also allows Outer Expanse Vistas on Monk & Survivor.
+
+[b][h1]Other :
+[/h1][/b]Option to hear music more often.
+A button for Automatically playing the next track in the Jukebox.
+
+Config to have randomized challenge difficulty.
+Config to have Hidden Challenges still get filtered.
+
+
+
+Use Unlock Tokens in Expedition because fun.
+
+Fixes a bug where Rivulet would never get a Shelter Failure in Expedition.
+Sorry that mod was broken for like a year.
+
+If you have issues, tell me what is in "Rain World/exception.log" (not consoleLog.txt) or contact me on Discord or GitHub.
+Exception log gets deleted every time you start the game.
+If there is no exception.log, reproduce the bug so it makes it again, if there's still not one, I can't help you.

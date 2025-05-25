@@ -1,0 +1,7 @@
+{
+    "key" : "eec_FireSpear",
+    "type" : "milestone",
+    "color" : "FFDD66",
+    "conditions" : ["ttyp-GlobalScoreChallenge-3"],
+    "reward" : ["unl-eec-FireSpear"],
+}

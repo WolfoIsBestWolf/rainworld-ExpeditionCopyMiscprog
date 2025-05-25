@@ -1,0 +1,13 @@
+{
+    "key" : "EEC_Past1",
+    "name" : "Mission_TimeTravelPast",
+    "slugcat" : "Saint",
+    "challenges" : [
+	"PearlDeliveryChallenge~LM><0><0><0",
+	"VistaChallenge~DM><DM_O02><2180><2175><0><0><0",
+	"VistaChallenge~GW><GW_E02_PAST><2608><621><0><0><0",
+	"PearlHoardChallenge~0><3><SI><0><0><0",
+				   ],
+	"requirements" : []
+    "den" : "LM_S06",
+}

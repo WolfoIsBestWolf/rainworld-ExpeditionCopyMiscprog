@@ -4,6 +4,8 @@
     <TargetFramework>net48</TargetFramework>
     <Nullable>enable</Nullable>
 	  <LangVersion>preview</LangVersion>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>

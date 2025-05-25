@@ -1,0 +1,7 @@
+{
+    "key" : "eec_MonkGate",
+    "type" : "milestone",
+    "color" : "FFDD66",
+    "conditions" : ["swins-Yellow-1"],
+    "reward" : ["unl-eec-MonkGate"],
+}

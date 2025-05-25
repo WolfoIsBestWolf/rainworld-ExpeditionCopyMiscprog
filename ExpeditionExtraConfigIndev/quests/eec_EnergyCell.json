@@ -1,0 +1,7 @@
+{
+    "key" : "eec_EnergyCell",
+    "type" : "milestone",
+    "color" : "FFDD66",
+    "conditions" : ["lvl-10","swins-Rivulet-4"],
+    "reward" : ["unl-eec-EnergyCell"],
+}
